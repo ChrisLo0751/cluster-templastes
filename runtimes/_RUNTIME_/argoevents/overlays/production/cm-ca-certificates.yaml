@@ -1,0 +1,11 @@
+apiVersion: v1
+data:
+  ca.crt: |
+    {{- range $line := split .SecretConfigs.Vault.CABundle "\n" }}
+          {{ $line | html }}
+    {{- end }}
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: ca-certificates
+  namespace: argo-events

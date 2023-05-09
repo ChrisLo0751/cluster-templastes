@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: tekton-dashboard
+  namespace: tekton-pipelines
+  annotations:
+    kubernetes.io/ingress.class: "traefik"
+    traefik.ingress.kubernetes.io/router.middlewares: 
+    "traefik-oauth-{{.Runtime.Name}}@kubernetescrd"
+spec:
+  tls:
+  - hosts:
+    - {{printf "tekton.%s.%s.nip.io" .Runtime.Name .Runtime.Apiserver}}
+  rules:
+  - host: {{printf "tekton.%s.%s.nip.io" .Runtime.Name .Runtime.Apiserver}}
+    http:
+      paths:
+      - path: /
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: tekton-dashboard
+            port:
+              number: 9097
