@@ -4,7 +4,7 @@ metadata:
   name: {{printf "%s-oauth2-proxy-resources" .HostCluster.Name}}
   namespace: argocd
 spec:
-  project: dev-tenant
+  project: {{.HostCluster.ArgocdProject}}
   source:
     path: host-clusters/{{.HostCluster.Name}}/oauth2-proxy/overlays/production
     repoURL: {{.RepoURL}}

@@ -4,7 +4,7 @@ metadata:
   name: {{printf "%s-oauth2-proxy" .HostCluster.Name}}
   namespace: argocd
 spec:
-  project: dev-tenant
+  project: {{.HostCluster.ArgocdProject}}
   source:
     chart: oauth2-proxy
     repoURL: https://oauth2-proxy.github.io/manifests
@@ -18,11 +18,11 @@ spec:
         extraArgs:
           provider: "oidc"
           provider-display-name: "Dex"
-          whitelist-domain: "{{printf ".%s.nip.io:%s" .HostCluster.Apiserver .Traefik.HttpsNodePort}}"
+          whitelist-domain: "{{printf ".%s:%s" .HostCluster.PrimaryDomain .Traefik.HttpsNodePort}}"
           cookie-secure: "true"
-          cookie-domain: "{{printf ".%s.nip.io" .Vcluster.HostCluster.Apiserver}}"
-          redirect-url: {{printf "https://auth.%s.%s.nip.io:%s/oauth2/callback" .HostCluster.Name .HostCluster.Apiserver .Traefik.HttpsNodePort}}
-          cookie-secret: "0d6a5698b9d52e612a6cb7161e747817"
+          cookie-domain: "{{printf ".%s" .HostCluster.PrimaryDomain}}"
+          redirect-url: {{printf "https://auth.%s.%s:%s/oauth2/callback" .HostCluster.Name .HostCluster.PrimaryDomain .Traefik.HttpsNodePort}}
+          cookie-secret: "{{randomString 32}}"
           oidc-issuer-url: "{{.OauthConfigs.Issuer}}"
           scope: "openid profile email groups"
           email-domain: "*"
@@ -35,11 +35,11 @@ spec:
             kubernetes.io/ingress.class: traefik
           tls:
             - hosts:
-                - {{printf "auth.%s.%s.nip.io" .HostCluster.Name .HostCluster.Apiserver}}
+                - {{printf "auth.%s.%s" .HostCluster.Name .HostCluster.PrimaryDomain}}
           path: /
           pathType: ImplementationSpecific
           hosts:
-            - {{printf "auth.%s.%s.nip.io" .HostCluster.Name .HostCluster.Apiserver}}
+            - {{printf "auth.%s.%s" .HostCluster.Name .HostCluster.PrimaryDomain}}
 
         extraVolumes:
           - name: ca-bundle-cert

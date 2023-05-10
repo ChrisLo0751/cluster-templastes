@@ -1,26 +1,25 @@
-{{- range $index, $item := .VclusterItems }}
+{{- range .HostCluster.ProjectPipelineItems }}
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{printf "%s-tekton-dashborard" $item.Name}}
+  name: {{printf "%s-tekton-dashborard" .Name}}
   namespace: oauth2-proxy
   annotations:
     kubernetes.io/ingress.class: "traefik"
 spec:
   tls:
   - hosts:
-    - {{printf "tekton.%s.%s.nip.io" $item.Name .$item.HostCluster.Apiserver}}
+    - {{.TektonConfig.Host}}
   rules:
-  - host: tekton.demo-pipeline.10.204.118.216.nip.io
+  - host: {{.TektonConfig.Host}}
     http:
       paths:
       - path: /oauth2
         pathType: ImplementationSpecific
         backend:
           service:
-            name: {{printf "%s-oauth2-proxy" .item.HostCluster.Name}}
+            name: {{.HostClusterName}}-oauth2-proxy
             port:
               number: 80
----
 {{- end}}

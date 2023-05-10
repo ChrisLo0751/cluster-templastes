@@ -4,9 +4,9 @@ metadata:
   name: tekton
   namespace: argocd
 spec:
-  project: {{.Runtime.Name}}-runtime-project
+  project: {{.Runtime.ArgocdConfig.Project}}
   source:
-    path: runtimes/{{.Runtime.Name}}-runtime/tekton/overlays/production
+    path: runtimes/{{.Runtime.Name}}/tekton/overlays/production
     repoURL: {{.RepoURL}}
     targetRevision: HEAD
   destination:

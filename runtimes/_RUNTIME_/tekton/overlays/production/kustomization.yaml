@@ -3,3 +3,4 @@ kind: Kustomization
 resources:
 - ../../../../../tekton/overlays/production
 - ingress-tekton-dashboard.yaml
+- rbac-tekton-dashboard.yaml

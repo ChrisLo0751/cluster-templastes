@@ -20,6 +20,13 @@ save:
     - oauth2-proxy-app.yaml
     - oauth2-proxy-resources-app.yaml
     - tekton-app.yaml
+    - tekton-cluster-tasks-app.yaml
+  physicalProjectPipelineRuntime:
+    ignorePath:
+    - host-clusters
+    - tenant
+    ignoreFile:
+    - argo-rollouts-app.yaml    
   virtualDeploymentRuntime:
     ignorePath:
     - traefik
@@ -30,12 +37,26 @@ save:
     - host-cluster-appset.yaml
     - traefik-app.yaml
     - traefik-resources-app.yaml
-    # - traefik-servers-transport.yaml
-    # - rbac-vault.yaml
+    - traefik-servers-transport.yaml
+    - rbac-vault.yaml
     - argo-events-app.yaml
     - oauth2-proxy-app.yaml
     - oauth2-proxy-resources-app.yaml
     - tekton-app.yaml
+    - tekton-cluster-tasks-app.yaml
+  virtualProjectPipelineRuntime:
+    ignorePath:
+    - runtimes/_RUNTIME_/traefik
+    - runtimes/_RUNTIME_/oauth2-proxy
+    ignoreFile:
+    - host-cluster-appset.yaml
+    - oauth2-proxy-app.yaml
+    - oauth2-proxy-resources-app.yaml
+    - traefik-app.yaml
+    - traefik-resources-app.yaml
+    - middleware-oauth-forward.yaml
+    - rbac-vault.yaml
+    - argo-rollouts-app.yaml
 remove:
   hostCluster:
     ignorePath:
@@ -49,18 +70,46 @@ remove:
     ignorePath:
     - host-clusters
     - runtimes
-    ignoreFile:
-    - host-cluster-appset.yaml
+    - tenant 
+  physicalProjectPipelineRuntime:
+    ignorePath:
+    - host-clusters
+    - runtimes
+    - tenant 
   virtualDeploymentRuntime:
     ignorePath:
     - vclusters
     - runtimes
+    - oauth2-proxy
+    - traefik
+    - argoevents
+    - tekton
+    - tenant
     ignoreFile:
     - host-cluster-appset.yaml
     - traefik-app.yaml
     - traefik-resources-app.yaml
     - middleware-oauth-forward.yaml
     - secret-ipd-ca.yaml
+    - argo-events-app.yaml
+    - argo-rollouts-app.yaml
+    - oauth2-proxy-app.yaml
+    - oauth2-proxy-resources-app.yaml
+    - tekton-app.yaml
+  virtualProjectPipelineRuntime:
+    ignorePath:
+    - vclusters
+    - runtimes
+    - argoevents
+    - tenant
+    - tekton
+    ignoreFile:
+    - traefik-app.yaml
+    - traefik-resources-app.yaml
+    - middleware-oauth-forward.yaml    
+    - secret-ipd-ca.yaml
+    - oauth2-proxy-app.yaml
+    - oauth2-proxy-resources-app.yaml
 common:
   ignorePath:
   - .git
@@ -68,5 +117,6 @@ common:
   - clusterignorerule.yaml
   - .gitignore
   - .gitkeep
+  - LICENSE
 
 

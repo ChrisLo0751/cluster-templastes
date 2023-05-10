@@ -5,14 +5,13 @@ metadata:
   namespace: tekton-pipelines
   annotations:
     kubernetes.io/ingress.class: "traefik"
-    traefik.ingress.kubernetes.io/router.middlewares: 
-    "traefik-oauth-{{.Runtime.Name}}@kubernetescrd"
+    traefik.ingress.kubernetes.io/router.middlewares: "traefik-oauth-{{.Runtime.ClusterName}}@kubernetescrd"
 spec:
   tls:
   - hosts:
-    - {{printf "tekton.%s.%s.nip.io" .Runtime.Name .Runtime.Apiserver}}
+    - {{.Runtime.TektonConfig.Host}}
   rules:
-  - host: {{printf "tekton.%s.%s.nip.io" .Runtime.Name .Runtime.Apiserver}}
+  - host: {{.Runtime.TektonConfig.Host}}
     http:
       paths:
       - path: /

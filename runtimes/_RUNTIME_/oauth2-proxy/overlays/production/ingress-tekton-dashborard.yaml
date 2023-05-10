@@ -8,9 +8,9 @@ metadata:
 spec:
   tls:
   - hosts:
-    - {{printf tekton.%s.%s.nip.io .Runtime.Name .Runtime.Apiserver}}
+    - {{.Runtime.TektonConfig.Host}}
   rules:
-  - host: {{printf tekton.%s.%s.nip.io .Runtime.Name .Runtime.Apiserver}}
+  - host: {{.Runtime.TektonConfig.Host}}
     http:
       paths:
       - path: /oauth2

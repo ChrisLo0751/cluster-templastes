@@ -15,18 +15,18 @@ spec:
 apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
 metadata:
-  name: oauth-{{.Runtime.Name}}
+  name: oauth-{{.Runtime.ClusterName}}
   namespace: traefik
 spec:
   chain:
     middlewares:
-    - name: oauth-errors-{{.Runtime.Name}}
+    - name: oauth-errors-{{.Runtime.ClusterName}}
     - name: oauth-forward
 ---
 apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
 metadata:
-  name: oauth-errors-{{.Runtime.Name}}
+  name: oauth-errors-{{.Runtime.ClusterName}}
   namespace: traefik
 spec:
   errors:
@@ -36,4 +36,4 @@ spec:
       name: oauth2-proxy
       namespace: oauth2-proxy
       port: 80
-    query: {{printf "/oauth2/sign_in?rd=https://tekton.%s.%s.nip.io:%s" .Runtime.Name .Runtime.Apiserver .Traefik.HttpsNodePort}}
+    query: {{printf "/oauth2/sign_in?rd=%s" .Runtime.TektonConfig.URL}}

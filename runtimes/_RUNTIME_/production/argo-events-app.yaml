@@ -4,9 +4,9 @@ metadata:
   name: argo-events
   namespace: argocd
 spec:
-  project: {{.Runtime.Name }}-runtime-project
+  project: {{.Runtime.ArgocdConfig.Project}}
   source:
-    path: runtimes/{{.Runtime.Name}}-runtime/argoevents/overlays/production
+    path: runtimes/{{.Runtime.Name}}/argoevents/overlays/production
     repoURL: {{.RepoURL}}
     targetRevision: HEAD
   destination:

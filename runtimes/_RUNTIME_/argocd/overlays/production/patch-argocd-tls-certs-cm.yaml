@@ -1,10 +1,10 @@
+---
 apiVersion: v1
 data:
-  ca.crt: |
+  gitlab.bluzin.io: |-
   {{- range $line := split .SecretConfigs.Vault.CABundle "\n" }}
     {{ $line | html }}
   {{- end }}
 kind: ConfigMap
 metadata:
-  name: ca-certificates
-  namespace: argo-events
+  name: argocd-tls-certs-cm
