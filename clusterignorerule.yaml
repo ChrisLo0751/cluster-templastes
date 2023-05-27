@@ -24,8 +24,8 @@ save:
   physicalProjectPipelineRuntime:
     ignorePath:
     - host-clusters
-    - tenant
     ignoreFile:
+    - host-cluster-appset.yaml
     - argo-rollouts-app.yaml    
   virtualDeploymentRuntime:
     ignorePath:
